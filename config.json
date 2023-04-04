@@ -1,0 +1,41 @@
+{
+    "observer": {
+        "log": "",
+        "syscalls": {
+            "ntdll": {
+                "enabled": true,
+                "events": false,
+                "functions": {
+                    "NtMapViewOfSection": {
+                        "mode": "before",
+                        "types": [
+                        ]
+                    },
+                    "NtOpenFile": {
+                        "enabled": true,
+                        "events": true
+                    }
+                },
+                "maxPtr": 3,
+                "maxStrLen": 256,
+                "minStrLen": 3,
+                "mode": "both",
+                "types": [
+                    "handles",
+                    "strings"
+                ]
+            },
+            "win32u": {
+                "enabled": true,
+                "events": false,
+                "maxPtr": 3,
+                "maxStrLen": 256,
+                "minStrLen": 3,
+                "mode": "both",
+                "types": [
+                    "strings"
+                ]
+            }
+        }
+    }
+}
