@@ -48,7 +48,7 @@ If you want to specify the path to the log file, then you should create key `log
 ```json
 {
     "observer": {
-		"log": "C:\\Users\\username\\Desktop\\",
+    	"log": "C:\\Users\\username\\Desktop\\",
         "syscalls": {
         }
     }
