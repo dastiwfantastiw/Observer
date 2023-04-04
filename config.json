@@ -1,6 +1,6 @@
 {
     "observer": {
-        "log": "C:\\Users\username\\Desktop\\",
+        "log": "C:\\Users\\username\\Desktop\\",
         "syscalls": {
             "ntdll": {
                 "enabled": true,
