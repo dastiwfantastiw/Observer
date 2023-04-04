@@ -25,9 +25,6 @@ Usage example:
 Observer.exe -i sample.exe -j config.json -d ObserverDll.dll -e
 ``
 
-### How it works
-This program parses the submitted JSON and converts it to binary format (see `config.h`), runs the submitted application with flag `CREATE_SUSPENDED` and injects `ObserverDll` with `binary config` into the process.
-
 ## ObserverDll
 This library contains the main functionality:
 - Interception of system calls
