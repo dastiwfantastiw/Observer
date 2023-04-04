@@ -110,7 +110,7 @@ The following types are currently available for recognition:
 ```json
 {
     "observer": {
-        "log": "",
+        "log": "C:\\Users\\username\\Desktop\\",
         "syscalls": {
             "ntdll": {
                 "enabled": true,
