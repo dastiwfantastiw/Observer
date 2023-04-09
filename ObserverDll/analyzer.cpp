@@ -655,7 +655,7 @@ bool analyzer::CalculateMD5Hash(const char* filePath, std::string& hash)
             return false;
         }
 
-        const uint32_t size = 1024;
+        const uint32_t size = 16 * 1024;
         uint8_t buffer[size] = {0};
 
         DWORD readed = 0;
@@ -667,7 +667,7 @@ bool analyzer::CalculateMD5Hash(const char* filePath, std::string& hash)
                 break;
             }
 
-            if (!CryptHashData(hHash, buffer, size, 0))
+            if (!CryptHashData(hHash, buffer, readed, 0))
             {
                 CryptReleaseContext(hProv, 0);
                 CryptDestroyHash(hHash);
