@@ -516,11 +516,25 @@ void OnProtectVirtualMemory(uint32_t id, uint32_t* args, Registers* regs, void* 
                 {
                     std::vector<std::string> args;
 
+                    std::vector<uint8_t> binary;
+
+                    bool isExecutable = NewAccessProtection & (PAGE_EXECUTE | PAGE_EXECUTE_READ | PAGE_EXECUTE_READWRITE | PAGE_EXECUTE_WRITECOPY);
+
+                    if (isExecutable)
+                    {
+                        binary.insert(binary.begin(), *(uint8_t**)BaseAddress, *(uint8_t**)BaseAddress + *NumberOfBytesToProtect);
+                    }
+
                     args.push_back(std::format(FORMAT_PROCESS(pid, imagePath.c_str())));
                     args.push_back(std::format(FORMAT_BASE_ADDRESS(READ_PTR((uint32_t*)BaseAddress)));
                     args.push_back(std::format(FORMAT_SIZE(READ_PTR(NumberOfBytesToProtect)));
                     args.push_back(std::format("NewProtection: {{{:#010x}, \"{:s}\"}}", (uint32_t)NewAccessProtection, strNewProtect.c_str()));
                     args.push_back(std::format("OldProtection: {{{:#010x}, \"{:s}\"}}", READ_PTR(OldAccessProtection), strOldProtect.c_str()));
+
+                    if (isExecutable)
+                    {
+                        args.push_back(std::format(FORMAT_BINARY(binary)));
+                    }
 
                     logger::LogEventWithTime(__FUNCTION__, args, NULL);
                 }
