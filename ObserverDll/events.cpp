@@ -424,6 +424,43 @@ DEFINE_CALLBACK(OnWow64WriteVirtualMemory64)
     }
 }
 
+DEFINE_CALLBACK(OnFreeVirtualMemory)
+{
+    HANDLE hProcess = (HANDLE)args[0];
+    uint32_t BaseAddress = args[1];
+    uint32_t* pRegionSize = (uint32_t*)args[2];
+    uint32_t FreeType = args[3];
+
+    switch (status)
+    {
+        case NotExecuted:
+        {
+            CEventArgs args(m_Logger, __FUNCTION__);
+
+            if (hProcess != GetCurrentProcess())
+                args.AddHandle(hProcess);
+
+            args.AddStringUint32("BaseAddress", BaseAddress);
+
+            if (pRegionSize)
+                args.AddStringSize32("Size", READ_PTR(pRegionSize));
+
+            uint32_t pageSize;
+
+            if (hProcess == GetCurrentProcess() && pRegionSize &&
+                !memory::IsBadReadAddress((void*)BaseAddress, &pageSize))
+            {
+                args.AddDump(BaseAddress, pageSize);
+            }
+
+            args.LogEvent(time, dbModule, dbFunc, NULL);
+        }
+
+        case Executed:
+            break;
+    }
+}
+
 DEFINE_CALLBACK(OnReadFile)
 {
     IN HANDLE hFile = (HANDLE)args[0];

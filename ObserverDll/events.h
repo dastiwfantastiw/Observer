@@ -131,6 +131,15 @@ public:
     void Callback(SYSTEMTIME* time, uint32_t id, uint32_t* args, Registers* regs, void* jmp, CDbModule* dbModule, CDbFunction* dbFunc, SyscallStatus& status) override;
 };
 
+class OnFreeVirtualMemory: public CEvent
+{
+public:
+    OnFreeVirtualMemory(CLogger& logger, ProcModes procMode)
+        : CEvent(logger, procMode){};
+
+    void Callback(SYSTEMTIME* time, uint32_t id, uint32_t* args, Registers* regs, void* jmp, CDbModule* dbModule, CDbFunction* dbFunc, SyscallStatus& status) override;
+};
+
 // File
 class OnReadFile: public CEvent
 {

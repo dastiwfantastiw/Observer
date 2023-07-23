@@ -124,6 +124,8 @@ public:
                 std::make_pair(0x5450082e, new OnWriteVirtualMemory(m_Logger, PROCESS_MODE_POST_EXEC)),
                 std::make_pair(0x8f9b0a3f, new OnWow64WriteVirtualMemory64(m_Logger, PROCESS_MODE_POST_EXEC)),
 
+                std::make_pair(0x4a3207a5, new OnFreeVirtualMemory(m_Logger, PROCESS_MODE_PRE_EXEC)),
+
                 std::make_pair(0x144703bf, new OnReadFile(m_Logger, PROCESS_MODE_POST_EXEC)),
                 std::make_pair(0x19ac044e, new OnWriteFile(m_Logger, PROCESS_MODE_POST_EXEC)),
                 std::make_pair(0x1d600497, new OnCreateFile(m_Logger, PROCESS_MODE_POST_EXEC)),
