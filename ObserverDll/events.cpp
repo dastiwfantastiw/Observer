@@ -427,7 +427,7 @@ DEFINE_CALLBACK(OnWow64WriteVirtualMemory64)
 DEFINE_CALLBACK(OnFreeVirtualMemory)
 {
     HANDLE hProcess = (HANDLE)args[0];
-    uint32_t BaseAddress = args[1];
+    uint32_t* BaseAddress = (uint32_t*)args[1];
     uint32_t* pRegionSize = (uint32_t*)args[2];
     uint32_t FreeType = args[3];
 
@@ -435,25 +435,25 @@ DEFINE_CALLBACK(OnFreeVirtualMemory)
     {
         case NotExecuted:
         {
-            CEventArgs args(m_Logger, __FUNCTION__);
-
-            if (hProcess != GetCurrentProcess())
-                args.AddHandle(hProcess);
-
-            args.AddStringUint32("BaseAddress", BaseAddress);
-
-            if (pRegionSize)
-                args.AddStringSize32("Size", READ_PTR(pRegionSize));
-
             uint32_t pageSize;
 
-            if (hProcess == GetCurrentProcess() && pRegionSize &&
-                !memory::IsBadReadAddress((void*)BaseAddress, &pageSize))
+            if (BaseAddress && !memory::IsBadReadAddress((void*)READ_PTR(BaseAddress), &pageSize))
             {
-                args.AddDump(BaseAddress, pageSize);
-            }
+                CEventArgs args(m_Logger, __FUNCTION__);
 
-            args.LogEvent(time, dbModule, dbFunc, NULL);
+                if (hProcess != GetCurrentProcess())
+                    args.AddHandle(hProcess);
+
+                args.AddStringUint32("BaseAddress", READ_PTR(BaseAddress));
+
+                if (pRegionSize)
+                    args.AddStringSize32("Size", READ_PTR(pRegionSize));
+
+                if (hProcess == GetCurrentProcess() && pRegionSize)
+                    args.AddDump(READ_PTR(BaseAddress), pageSize);
+
+                args.LogEvent(time, dbModule, dbFunc, NULL);
+            }
         }
 
         case Executed:
